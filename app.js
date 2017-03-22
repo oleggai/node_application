@@ -5,11 +5,12 @@
 var http = require('http');
 var path = require('path');
 var express = require('express');
+var config = require('./config');
+var log = require('./lib/log.js')(module);
 
 var app = express();
-app.set('port', 3000);
-http.createServer(app).listen(app.get('port'), function(){
-    console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(config.get('port'), function(){
+    log.info('info','Express server listening on port ' + config.get('port'));
 });
 
 app.use(function(request, response, next) {
