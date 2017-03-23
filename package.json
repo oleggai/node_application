@@ -9,6 +9,8 @@
     "express": "3.21.2",
     "ejs": "*",
     "nconf": "latest",
-    "winston": "latest"
+    "winston": "latest",
+    "ejs-locals": "latest",
+    "mongodb": "latest"
   }
 }
