@@ -2,11 +2,14 @@
 /**
  * Module dependencies.
  */
+
+global.__base  = __dirname + '/';
+
 var http = require('http');
 var path = require('path');
 var express = require('express');
-var config = require('./config');
-var log = require('./lib/log.js')(module);
+var config = require(__base + 'config');
+var log = require(__base + 'lib/log')(module);
 
 var app = express();
 
