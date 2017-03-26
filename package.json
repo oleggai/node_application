@@ -12,6 +12,7 @@
     "nconf": "latest",
     "winston": "latest",
     "ejs-locals": "latest",
-    "mongodb": "latest"
+    "mongodb": "latest",
+    "mongoose": "latest"
   }
 }
