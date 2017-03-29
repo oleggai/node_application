@@ -1,8 +1,8 @@
-global.__base  = __dirname + '/';
+global.__base = __dirname + '/';
 var User = require(__base + 'models/user').User;
 
 var user = new User({
-    username: 'Tester2',
+    username: 'Tester3',
     password: 'secret'
 });
 

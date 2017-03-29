@@ -13,6 +13,7 @@
     "winston": "latest",
     "ejs-locals": "latest",
     "mongodb": "latest",
-    "mongoose": "latest"
+    "mongoose": "latest",
+    "async": "latest"
   }
 }
