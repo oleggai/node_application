@@ -11,15 +11,13 @@ var express = require('express');
 var config = require(__base + 'config');
 var log = require(__base + 'lib/log')(module);
 
+var HttpError = require(__base + 'error').HttpError;
+
 var app = express();
 
 app.engine('ejs', require('ejs-locals'));
 app.set('views', path.join(__dirname, 'templates'));
 app.set('view engine', 'ejs');
-
-http.createServer(app).listen(config.get('port'), function(){
-    log.info('info','Express server listening on port ' + config.get('port'));
-});
 
 // all environments
 app.use(express.favicon());
@@ -29,27 +27,42 @@ if(app.get('env') == 'development') {
 } else {
     app.use(express.logger('default'));
 }
-
 app.use(express.json());
-app.use(express.urlencoded());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', function(request, response, next) {
-    // or response.send(200, "Hello user");
-    response.render('index');
-});
 
-app.use(function(request, response, next) {
-    response.send(404, 'Sorry, Page not found');
-});
+app.use(express.urlencoded());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(require(__base + 'middleware/sendHttpError'));
+app.use(app.router);
+
+
+
+require(__base + 'routes')(app);
+
+
+
 
 app.use(function(error, request, response, next) {
-    if(app.get('env') == 'development') {
-        var errorHandler = express.errorHandler();
-        errorHandler(error, request, response, next);
-    } else {
-        response.send(500);
+
+    if(typeof error == 'number') {
+        error = new HttpError(error);
     }
+
+    if(error instanceof HttpError) {
+        response.sendHttpError(error);
+    } else {
+
+        if(app.get('env') == 'development') {
+            express.errorHandler()(error, request, response, next);
+        } else {
+            log.error(error);
+            error = new HttpError(500);
+            response.sendHttpError(error);
+        }
+    }
+});
+
+http.createServer(app).listen(config.get('port'), function(){
+    log.info('info','Express server listening on port ' + config.get('port'));
 });
 
 /*
