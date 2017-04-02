@@ -10,7 +10,8 @@ exports.index = function(req, res){
 
 var User = require(__base + 'models/user').User;
 var HttpError = require(__base + 'error').HttpError;
-
+var ObjectID = require('mongodb').ObjectID;
+var userNotFoundError = new HttpError(404, 'User not found');
 module.exports = function(app) {
     app.get('/', function(request, response, next) {
         // or response.send(200, "Hello user");
@@ -25,11 +26,18 @@ module.exports = function(app) {
     });
 
     app.get('/users/:id', function(request, response, next) {
-        User.findOne({_id: request.params.id}, function(error, user) {
+        try {
+            var id = new ObjectID(request.params.id);
+        } catch(e) {
+            next(userNotFoundError);
+            return;
+        }
+
+        User.findOne({_id: id}, function(error, user) {
             if(error) return next(error);
 
             if(!user) {
-              next(new HttpError(404, 'User not found'));
+              next(userNotFoundError);
             } else {
                 response.json(user);
             }
