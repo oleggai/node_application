@@ -10,9 +10,9 @@ module.exports = function(app) {
     app.post('/logout', require('./logout').post);
     app.get('/chat', require('./chat').get);
 
-    app.use(function(request, response, next) {
+/*    app.use(function(request, response, next) {
         response.sendHttpError(new HttpError(404, 'Page not found'));
-    });
+    });*/
 
 
 };
