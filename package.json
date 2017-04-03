@@ -14,6 +14,7 @@
     "ejs-locals": "latest",
     "mongodb": "latest",
     "mongoose": "latest",
-    "async": "latest"
+    "async": "latest",
+    "connect-mongo": "latest"
   }
 }
