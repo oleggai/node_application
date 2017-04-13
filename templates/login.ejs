@@ -35,12 +35,12 @@
                 },
                 statusCode: {
                     200: function() {
-                        alert(200);
                         form.html("Вы вошли на сайт").addClass('alert-success');
                         window.location.href = "/chat";
                     },
                     403: function(jqXHR) {
                         var error = JSON.parse(jqXHR.responseText);
+                        alert(error.message);
                         $('.error', form).html(error.message);
                     },
                     404: function () {

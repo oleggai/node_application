@@ -22,5 +22,4 @@ exports.post = function(request, response, next) {
             response.send({});
         }
     });
-    var a = 9;
 };

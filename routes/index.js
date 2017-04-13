@@ -1,6 +1,6 @@
 
 var HttpError = require(__base + 'error').HttpError;
-
+var checkAuth = require(__base + 'middleware/checkAuth');
 module.exports = function(app) {
 
 
@@ -8,12 +8,11 @@ module.exports = function(app) {
     app.get('/login', require('./login').get);
     app.post('/login', require('./login').post);
     app.post('/logout', require('./logout').post);
-    app.get('/chat', require('./chat').get);
+    app.get('/chat', checkAuth, require('./chat').get);
 
-/*    app.use(function(request, response, next) {
-        response.sendHttpError(new HttpError(404, 'Page not found'));
-    });*/
-
+    app.get('*', function(request, response){
+        response.sendHttpError(new HttpError(404, 'Страница не найдена'));
+    });
 
 };
 
