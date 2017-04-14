@@ -10,6 +10,8 @@ module.exports = function(app) {
     app.post('/logout', require('./logout').post);
     app.get('/chat', checkAuth, require('./chat').get);
 
+    app.get('/server_stats', checkAuth, require('./server_stats').get);
+
     app.get('*', function(request, response){
         response.sendHttpError(new HttpError(404, 'Страница не найдена'));
     });

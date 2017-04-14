@@ -8,6 +8,7 @@ global.__base  = __dirname + '/';
 var http = require('http');
 var path = require('path');
 var express = require('express');
+var WebSocketServer = require('ws').Server;
 var config = require(__base + 'config');
 var log = require(__base + 'lib/log')(module);
 var mongoose = require(__base + "lib/mongoose");
@@ -79,10 +80,23 @@ app.use(function(error, request, response, next) {
     }
 });
 
-http.createServer(app).listen(config.get('port'), function(){
+var server = http.createServer(app).listen(config.get('port'), function(){
     log.info('info','Express server listening on port ' + config.get('port'));
 });
 
+var webSocketServer = new WebSocketServer({server: server});
+webSocketServer.on('connection', function(ws) {
+    var timer = setInterval(function() {
+        ws.send(JSON.stringify(process.memoryUsage()), function(error) {
+            // TODO: handle errors
+        });
+    }, 100);
+    console.log("Клиент подключился");
+    ws.on('close', function() {
+        console.log('Клиент отключился');
+        clearInterval(timer);
+    });
+});
 /*
 var routes = require('./routes');
 var user = require('./routes/user');

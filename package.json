@@ -15,6 +15,7 @@
     "mongodb": "latest",
     "mongoose": "latest",
     "async": "latest",
-    "connect-mongo": "latest"
+    "connect-mongo": "latest",
+    "ws": "latest"
   }
 }

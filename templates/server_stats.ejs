@@ -1,0 +1,41 @@
+<% layout('layout/page') %>
+
+<% block('title', 'Server stats')%>
+
+<h1 class="lead">Server Stats</h1>
+<span>rss: </span><span id="rss"></span><br>
+<span>heapTotal: </span><span id="heapTotal"></span><br>
+<span>heapUsed: </span><span id="heapUsed"></span><br>
+<script>
+
+    $(document).ready(function() {
+
+        var ws = new WebSocket('ws://localhost:3000');
+
+        ws.onmessage = function(event) {
+            updateStats(JSON.parse(event.data))
+        }
+        ws.onopen = function() {
+            console.log('Соединение установлено');
+        }
+        ws.onclose = function(event) {
+            if(event.wasClean) {
+                console.log("Сoединение закрыто чисто");
+            } else {
+                console.log('Обрыв соединения');
+            }
+            console.log('Код: ' + event.code + ' причина: ' + event.reason);
+        }
+        ws.onerror = function(error) {
+            console.log('Ошибка ' + error.message);
+        }
+
+    });
+
+    function updateStats(memuse) {
+        $('#rss').html(memuse.rss);
+        $('#heapTotal').html(memuse.heapTotal);
+        $('#heapUsed').html(memuse.heapUsed);
+    }
+
+</script>
