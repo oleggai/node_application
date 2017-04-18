@@ -6,11 +6,20 @@
 <span>rss: </span><span id="rss"></span><br>
 <span>heapTotal: </span><span id="heapTotal"></span><br>
 <span>heapUsed: </span><span id="heapUsed"></span><br>
+
+<script src="/socket.io/socket.io.js"></script>
+
 <script>
 
     $(document).ready(function() {
 
-        var ws = new WebSocket('ws://localhost:3000');
+        var socket = io.connect();
+        socket.on('server_stats', function (data) {
+            console.log(data);
+            updateStats(data);
+        });
+
+/*        var ws = new WebSocket('ws://localhost:3000');
 
         ws.onmessage = function(event) {
             updateStats(JSON.parse(event.data))
@@ -28,7 +37,7 @@
         }
         ws.onerror = function(error) {
             console.log('Ошибка ' + error.message);
-        }
+        }*/
 
     });
 
