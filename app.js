@@ -33,12 +33,12 @@ if(app.get('env') == 'development') {
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 
-var MongoStore = require("connect-mongo")(express);
+var sessionStore = require(__base + 'lib/sessionStore');
 app.use(express.session({
     secret: config.get("session:secret"),
     key: config.get("session:key"),
     cookie: config.get("session:cookie"),
-    store: new MongoStore({mongooseConnection: mongoose.connection})
+    store: sessionStore
 }));
 
 app.use(express.json());
@@ -84,7 +84,9 @@ var server = http.createServer(app).listen(config.get('port'), function(){
     log.info('info','Express server listening on port ' + config.get('port'));
 });
 
-require(__base + './socket')(server);
+var io = require(__base + './socket')(server);
+
+app.set('io', io);
 
 /*var webSocketServer = new WebSocketServer({server: server});
 webSocketServer.on('connection', function(ws) {

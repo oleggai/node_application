@@ -17,6 +17,9 @@
     "async": "latest",
     "connect-mongo": "latest",
     "ws": "latest",
-    "socket.io": "latest"
+    "socket.io": "latest",
+    "cookie": "latest",
+    "connect": "latest",
+    "cookie-parser": "latest"
   }
 }

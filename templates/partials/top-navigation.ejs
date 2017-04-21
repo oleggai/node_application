@@ -11,10 +11,30 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <% if(user) { %>
-            <li><a href="" onclick="$('<form method=POST action=/logout>').submit();return false">Выйти</a></li>
+            <li><a id="logout" href="#">Выйти</a></li>
             <% } else {%>
             <li><a href="/login">Войти</a></li>
             <% } %>
         </ul>
     </div>
 </nav>
+
+<script>
+    $(document).ready(function() {
+        $('#logout').bind('click', function() {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/logout',
+                data: {
+
+                },
+                success: function(response) {
+                    window.location.href = '/';
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
